@@ -49,7 +49,7 @@ async def kameto(bot, client, message, *args):
             rand_image = random.choice(os.listdir(dir_image))
             await client.send_file(message.channel, os.path.join(dir_image, rand_image))
         elif args[0] == "clip":
-            await client.send_message(message.channel, '{0.mention}  {1}'.format(message.author, request.use_clips()))
+            await client.send_message(message.channel, '{0.mention}  {1}'.format(message.author, await request.use_clips()))
         else:
             await client.send_message(message.channel, '{0.mention} options disponible: phrase, image, clip'.format(message.author))
     except IndexError:
