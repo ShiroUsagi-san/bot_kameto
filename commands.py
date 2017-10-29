@@ -1,8 +1,9 @@
-from bot import Bot
+import random
 import asyncio
 import discord
-import random
-
+import os
+from bot import Bot
+import request
 
 """
 messages colors level
@@ -36,22 +37,25 @@ async def kameto(bot, client, message, *args):
     Usage: ?kameto [type]
     permet de generer [type] au hasard
     """
+    try:
+        if args[0] == "phrase":
+            f = open('random_phrases.txt', 'rt')
+            data = f.read().split('\n')
+            choice = random.choice(data)
+            f.close()
+            await client.send_message(message.channel, '{0.mention} {1}'.format(message.author, choice))
+        elif args[0] == "image":
+            dir_image = os.path.join(os.path.dirname(__file__), "images")
+            rand_image = random.choice(os.listdir(dir_image))
+            await client.send_file(message.channel, os.path.join(dir_image, rand_image))
+        elif args[0] == "clip":
+            await client.send_message(message.channel, '{0.mention}  {1}'.format(message.author, request.pick_clip_random()))
+        else:
+            await client.send_message(message.channel, '{0.mention} options disponible: phrase, image, clip'.format(message.author))
+    except IndexError:
+         await client.send_message(message.channel, '{0.mention} options disponible: "phrase", "image", "clip"'.format(message.author))
+       
 
-    if args[0] == "phrase":
-        f = open('random_phrases.txt', 'rt')
-        data = f.read().split('\n')
-        choice = random.choice(data)
-        f.close()
-        await client.send_message(message.channel, '{0.mention} {1}'.format(message.author, choice))
-    elif args[0] == "image":
-        pass
-        #todo
-    elif args[0] == "clip":
-        pass
-         #todo
-    else:
-        await client.send_message(message.channel, '{0.mention} cette option n\'existe pas'.format(message.author))
-        
 @Bot.register_cmd
 async def aide(bot, client, message, cmd=None, *args):
     """
