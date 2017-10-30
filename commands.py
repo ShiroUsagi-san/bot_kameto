@@ -47,6 +47,7 @@ async def kameto(bot, client, message, *args):
         elif args[0] == "image":
             dir_image = os.path.join(os.path.dirname(__file__), "images")
             rand_image = random.choice(os.listdir(dir_image))
+            await client.send_message(message.channel, '{0.mention}'.format(message.author))
             await client.send_file(message.channel, os.path.join(dir_image, rand_image))
         elif args[0] == "clip":
             await client.send_message(message.channel, '{0.mention}  {1}'.format(message.author, await request.use_clips()))
